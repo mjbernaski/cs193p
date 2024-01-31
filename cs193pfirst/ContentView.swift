@@ -15,7 +15,9 @@ struct ContentView: View {
     @State var cardCount = 4
     var body: some View {
         VStack {
-            cards
+            ScrollView {
+                cards
+            }
             Spacer()
             cardCountAdjusters
         }
@@ -36,6 +38,7 @@ struct ContentView: View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
             ForEach(0..<cardCount, id: \.self) {index in
                 CardView(content: emojis[index], description: emojisDescription[index])
+                    .aspectRatio(2/3, contentMode: .fit)
             }
         }
         .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
@@ -75,7 +78,10 @@ struct CardView: View {
                 Group {
                     base.fill(.white)
                     base.strokeBorder(lineWidth: 1)
-                    Text(content).font(.largeTitle)
+                    VStack {
+                        Text(content).font(.largeTitle)
+                        Text(description).font(.footnote)
+                    }
                 }.opacity(isFaceUp ? 1 : 0)
             base.fill().opacity(isFaceUp ? 0: 1)
             
