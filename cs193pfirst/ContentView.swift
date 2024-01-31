@@ -10,20 +10,30 @@ import SwiftUI
 struct ContentView: View {
     let emojis:[String] = ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯", "🦁", "🐮", "🐷", "🐸", "🐵", "🦄", "🐔", "🐧", "🐦", "🐺"]
     let emojisDescription:[String] = ["Dog", "Cat", "Mouse", "Hamster", "Rabbit", "Fox", "Bear", "Panda", "Koala", "Tiger", "Lion", "Cow", "Pig", "Frog", "Monkey", "Unicorn", "Chicken", "Penguin", "Bird", "Wolf"]
-
+    
     
     @State var cardCount = 4
     var body: some View {
         VStack {
             cards
+            Spacer()
             cardCountAdjusters
-    }
-        
-
         }
+    }
+    
+    func cardCountAdjuster(by offset: Int, symbol: String) -> some View {
+        Button(action: {
+            cardCount += offset
+        }
+               , label: {
+            Image(systemName: symbol)
+        })
+        .padding()
+        .disabled(cardCount + offset < 1 || cardCount + offset > emojis.count)
+    }
     
     var cards: some View {
-        HStack {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
             ForEach(0..<cardCount, id: \.self) {index in
                 CardView(content: emojis[index], description: emojisDescription[index])
             }
@@ -45,24 +55,11 @@ struct ContentView: View {
     }
     
     var cardRemover: some View {
-        Button(action: {
-            if cardCount > 1 {
-                cardCount -= 1
-            }
-        }, label: {
-            Image(systemName: "minus")
-        })
-        .padding()
+            cardCountAdjuster(by: -1, symbol: "minus")
     }
     
     var cardAdder: some View {
-        Button(action: {
-            if cardCount < emojis.count {
-                cardCount += 1
-            }
-        }, label: {
-            Image(systemName: "plus")
-        }).padding()
+        cardCountAdjuster(by: 1, symbol: "plus")
     }
     
 }
@@ -71,32 +68,23 @@ struct CardView: View {
     let content: String
     let description: String
     @State var isFaceUp: Bool = false
+    
     var body: some View {
         ZStack {
-            if isFaceUp {
-                RoundedRectangle(cornerRadius: 25.0)
-                    .foregroundColor(.white)
-                RoundedRectangle(cornerRadius: /*@START_MENU_TOKEN@*/25.0/*@END_MENU_TOKEN@*/)
-                    .strokeBorder(lineWidth: /*@START_MENU_TOKEN@*/1.0/*@END_MENU_TOKEN@*/)
-                VStack {
-                    Text(content)
-                        .font(.largeTitle)
-                    Text(description).font(.footnote)
-                }
-            }
-            else
-            {RoundedRectangle(cornerRadius: 25.0).fill()
-            }
+            let base = RoundedRectangle(cornerRadius: 12)
+                Group {
+                    base.fill(.white)
+                    base.strokeBorder(lineWidth: 1)
+                    Text(content).font(.largeTitle)
+                }.opacity(isFaceUp ? 1 : 0)
+            base.fill().opacity(isFaceUp ? 0: 1)
+            
         }.onTapGesture {
             isFaceUp.toggle()
         }
         .foregroundColor(.teal)
     }
 }
-
-
-
-
 
 
 #Preview {
