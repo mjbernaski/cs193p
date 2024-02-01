@@ -19,19 +19,7 @@ struct ContentView: View {
                 cards
             }
             Spacer()
-            cardCountAdjusters
         }
-    }
-    
-    func cardCountAdjuster(by offset: Int, symbol: String) -> some View {
-        Button(action: {
-            cardCount += offset
-        }
-               , label: {
-            Image(systemName: symbol)
-        })
-        .padding()
-        .disabled(cardCount + offset < 1 || cardCount + offset > emojis.count)
     }
     
     var cards: some View {
@@ -46,25 +34,7 @@ struct ContentView: View {
         
     }
     
-    var cardCountAdjusters: some View {
-        HStack {
-            cardAdder
-            Spacer()
-            cardRemover
 
-
-        }    .imageScale(.large)
-            .font(.largeTitle)
-    }
-    
-    var cardRemover: some View {
-            cardCountAdjuster(by: -1, symbol: "minus")
-    }
-    
-    var cardAdder: some View {
-        cardCountAdjuster(by: 1, symbol: "plus")
-    }
-    
 }
 
 struct CardView: View {
