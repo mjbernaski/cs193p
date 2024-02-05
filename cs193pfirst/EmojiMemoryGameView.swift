@@ -65,6 +65,7 @@ struct CardView: View {
             
         }
         .foregroundColor(.teal)
+        .opacity(card.isFaceUp || !card.isMatched ? 1:0)
     }
 }
 

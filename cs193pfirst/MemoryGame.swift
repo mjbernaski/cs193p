@@ -15,33 +15,48 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         cards = []
         for pairIndex in 0..<max(2, numberOfPairsOfCards) {
             let content: CardContent = cardContentFactory(pairIndex)
-            cards.append(Card(isFaceUp: true, isMatched: false, content: content, id: "\(pairIndex+1)a"))
-            cards.append(Card(isFaceUp: true, isMatched: false, content: content, id: "\(pairIndex+1)b"))
+            cards.append(Card(isFaceUp: false, isMatched: false, content: content, id: "\(pairIndex+1)a"))
+            cards.append(Card(isFaceUp: false, isMatched: false, content: content, id: "\(pairIndex+1)b"))
         }
     }
+    
+    var indexOfTheOneFaceUpcard: Int?
     
     mutating func shuffle() {
         cards.shuffle()
          }
     
-    func findCardIndex(_ card: Card)-> Int  {
+    func findCardIndex(_ card: Card)-> Int?  {
         
         for index in cards.indices {
             if cards[index].id == card.id {
                 return index
             }
         }
-        
-        return 0  // FIXME:  change to an optional
+        return nil
     }
     
    mutating func choose(_ card: Card) {
         
-        let chosenIndex = findCardIndex(card)
-        cards[chosenIndex].isFaceUp.toggle()
-        
-     //   print("chose \(card)")
-        
+       if let chosenIndex = findCardIndex(card) {
+           if !cards[chosenIndex].isFaceUp && !cards[chosenIndex].isMatched {
+               if let potentialMatchIndex = indexOfTheOneFaceUpcard {
+                   if cards[chosenIndex].content == cards[potentialMatchIndex].content {
+                       cards[chosenIndex].isMatched = true
+                       cards[potentialMatchIndex].isMatched = true
+                   }
+                   indexOfTheOneFaceUpcard = nil
+               } else {
+                   for index in cards.indices {
+                       cards[index].isFaceUp = false
+                   }
+                   indexOfTheOneFaceUpcard = chosenIndex
+               }
+               
+               cards[chosenIndex].isFaceUp = true
+           }
+               
+       }
     }
     
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
