@@ -32,7 +32,7 @@ class EmojiMemoryGame: ObservableObject {
     
     func shuffle() {
         model.shuffle()
- //       print(cards)
+      //  print(cards)
     }
     
     func choose(_ card: MemoryGame<String>.Card) {  // this is an intent function 
