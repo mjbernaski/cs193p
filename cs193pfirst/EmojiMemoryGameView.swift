@@ -52,30 +52,18 @@ struct EmojiMemoryGameView: View  {
         size: CGSize,
         atAspectRatio aspectRatio: CGFloat) -> CGFloat
     {
-        print("size", size)
         let count = CGFloat(count)
         var columnCount = 1.0
         repeat {
             let width = size.width / columnCount
-            print("columnCount ", columnCount)
-            print("count ", count)
-            print("width ", width)
-            print("size ", size)
             let height = width / aspectRatio
-            print("height ", height)
-            print("size.height", size.height)
             let rowCount = (count / columnCount)
-            print("rowCount ", rowCount)
-            print("rowCount * height", rowCount * height)
             if (rowCount * height < size.height) {
                 print((size.width / columnCount).rounded(.down))
                 return (size.width / columnCount).rounded(.down)
             }
             columnCount += 1.0
-            print("--------------------")
         } while (columnCount < count)
-        
-        print(min(size.width / count, size.height * aspectRatio).rounded(.down))
         
         return min(size.width / count, size.height * aspectRatio).rounded(.down)
     }
