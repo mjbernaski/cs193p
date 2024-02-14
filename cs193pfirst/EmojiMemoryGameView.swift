@@ -29,14 +29,18 @@ struct EmojiMemoryGameView: View  {
     private let aspectRatio:CGFloat = 2/3
     
     private var cards: some View {
-        
-        AspectVGrid(items: viewModel.cards, aspectRatio: aspectRatio) {card in
+        AspectVGrid(viewModel.cards, aspectRatio: aspectRatio) {card in
+            if card.id.last == "b" || card.id.last == "a" {
+                VStack {
                     CardView(card: card)
                         .padding(4)
                         .onTapGesture {
                             viewModel.choose(card)  // Intents
                         }
+                    Text(card.id)
                 }
+            }
+        }
 
             }
         }
