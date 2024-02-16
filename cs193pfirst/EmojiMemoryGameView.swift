@@ -31,14 +31,11 @@ struct EmojiMemoryGameView: View  {
     private var cards: some View {
         AspectVGrid(viewModel.cards, aspectRatio: aspectRatio) {card in
             if card.id.last == "b" || card.id.last == "a" {
-                VStack {
                     CardView(card: card)
                         .padding(4)
                         .onTapGesture {
                             viewModel.choose(card)  // Intents
                         }
-                    Text(card.id)
-                }
             }
         }
 
@@ -46,28 +43,6 @@ struct EmojiMemoryGameView: View  {
         }
     
 
-struct CardView: View {
-    
-    let card: MemoryGame<String>.Card
-    
-    var body: some View {
-        ZStack {
-            let base = RoundedRectangle(cornerRadius: 12)
-                Group {
-                    base.fill(.white)
-                    base.strokeBorder(lineWidth: 1)
-                    VStack {
-                        Text(card.content).font(.system(size: 200)).minimumScaleFactor(0.01).aspectRatio(1, contentMode: .fit)
-                     //   Text(card.id).font(.footnote)
-                    }
-                }.opacity(card.isFaceUp ? 1 : 0)
-            base.fill().opacity(card.isFaceUp ? 0: 1)
-            
-        }
-        .foregroundColor(.teal)
-        .opacity(card.isFaceUp || !card.isMatched ? 1:0)
-    }
-}
 
 
 #Preview {
