@@ -14,28 +14,21 @@ struct CardView: View {
 
     
     var body: some View {
-        ZStack {
-            let base = RoundedRectangle(cornerRadius: 12)
-                Group {
-                    base.fill(.white)
-                    base.strokeBorder(lineWidth: 1)
-                    Pie(endAngle: Angle.degrees(240))
-                        .opacity(0.4)
-                        .overlay(
-                            Text(card.content)
-                                .font(
-                                    .system(size: 200))
-                                .minimumScaleFactor(0.01)
-                                .aspectRatio(1, contentMode:
-                                .fit).padding(5)
-                        )
-                        .padding(5)
-                }.opacity(card.isFaceUp ? 1 : 0)
-            
-            base.fill().opacity(card.isFaceUp ? 0: 1)
-        }
-        .foregroundColor(.teal)
-        .opacity(card.isFaceUp || !card.isMatched ? 1:0)
+        Pie(endAngle: Angle.degrees(240))
+            .opacity(0.4)
+            .overlay(
+                Text(card.content)
+                    .font(
+                        .system(size: 200))
+                    .minimumScaleFactor(0.01)
+                    .aspectRatio(1, contentMode:
+                    .fit).padding(5)
+            )
+            .padding(5)
+        //    .modifier(Cardify(isFaceUp: card.isFaceUp))
+            .cardify(isFaceUp: card.isFaceUp)
+            .foregroundColor(.teal)
+            .opacity(card.isFaceUp || !card.isMatched ? 1:0)
     }
 }
 
