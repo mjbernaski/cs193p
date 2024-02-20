@@ -10,6 +10,7 @@ import Foundation
 struct MemoryGame<CardContent> where CardContent: Equatable {
     
     private(set) var cards: Array<Card>  // access control 
+    private(set) var score = 0
     
     init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
         cards = []
@@ -73,6 +74,8 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         return nil
     }
     
+    // TO DO - subtracting from score not working 
+    
    mutating func choose(_ card: Card) {
         
        if let chosenIndex = findCardIndex(card) {
@@ -81,6 +84,17 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                    if cards[chosenIndex].content == cards[potentialMatchIndex].content {
                        cards[chosenIndex].isMatched = true
                        cards[potentialMatchIndex].isMatched = true
+                       score += 2
+                   }
+                   else {
+                       if cards[chosenIndex].hasBeenSeen {
+                           score -= 1
+                           print("has been seen")
+                       }
+                       if cards[potentialMatchIndex].hasBeenSeen {
+                           score -= 1
+                           print("has been seen")
+                       }
                    }
                } else {
                    indexOfTheOneFaceUpcard = chosenIndex
@@ -98,7 +112,14 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
 //            lhs.isMatched == rhs.isMatched
 //        }
         
-        var isFaceUp: Bool
+        var isFaceUp = false {
+            didSet {
+                if oldValue && !isFaceUp {
+                    hasBeenSeen = true
+                }
+            }
+        }
+        var hasBeenSeen = false
         var isMatched: Bool
         var content: CardContent // a dont care, we do not care what type, a generic 
         var id: String
