@@ -49,7 +49,6 @@
 		614F87EF2B69A295003772BB = {
 			isa = PBXGroup;
 			children = (
-				61B1B18A2B84FB4900D2CD3F /* FlyingNumber.swift */,
 				614F87FA2B69A295003772BB /* cs193pfirst */,
 				614F87F92B69A295003772BB /* Products */,
 			);
@@ -67,6 +66,7 @@
 			isa = PBXGroup;
 			children = (
 				614F87FB2B69A295003772BB /* cs193pfirstApp.swift */,
+				61B1B18A2B84FB4900D2CD3F /* FlyingNumber.swift */,
 				61B1B1882B80FA9000D2CD3F /* Cardify.swift */,
 				614F87FD2B69A295003772BB /* EmojiMemoryGameView.swift */,
 				61B1B1842B7E5ACD00D2CD3F /* CardView.swift */,

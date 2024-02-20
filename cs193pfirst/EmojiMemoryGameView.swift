@@ -23,7 +23,7 @@ struct EmojiMemoryGameView: View  {
                 score
                 Spacer()
                shuffle
-            }.padding()
+            }
         }
        
     }
@@ -46,21 +46,32 @@ struct EmojiMemoryGameView: View  {
     private var cards: some View {
         AspectVGrid(viewModel.cards, aspectRatio: aspectRatio) {card in
             if card.id.last == "b" || card.id.last == "a" {
-                    CardView(card: card)
-                        .padding(4)
-                        .overlay(FlyingNumber(number: scoreChange(causedBy: card)))
-                        .onTapGesture {
-                            withAnimation(.easeInOut(duration: 3)) {
-                                viewModel.choose(card)  // Intents
-                            }
-                        }
+                CardView(card: card)
+                    .padding(4)
+                    .overlay(FlyingNumber(number: scoreChange(causedBy: card)))
+                    .zIndex(scoreChange(causedBy: card) != 0 ? 100: 0)
+                    .onTapGesture {
+                        choose(card)
                     }
-                }
-
             }
+            
+        }
+    }
+        
+        private func choose(_ card: Card) {
+            withAnimation(.easeInOut(duration: 3)) {
+                let scoreBeforeChoosing = viewModel.score
+                viewModel.choose(card)  // Intents
+                let scoreChange = viewModel.score - scoreBeforeChoosing
+                lastScoreChange = (scoreChange, causedByCardId: card.id)
+            }
+        }
+    
+    @State private var lastScoreChange: (amount: Int, causedByCardId: Card.ID) = (0, causedByCardId: "")
     
     private func scoreChange(causedBy card: Card) -> Int {
-        return 0
+        let (amount, causedByCardId: id) = lastScoreChange
+        return card.id == id ? amount: 0
     }
         }
     
