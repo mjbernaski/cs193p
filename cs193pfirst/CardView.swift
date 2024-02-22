@@ -14,23 +14,25 @@ struct CardView: View {
 
     
     var body: some View {
-        Pie(endAngle: Angle.degrees(240))
-            .opacity(0.4)
-            .overlay(
-                Text(card.content)
-                    .font(
-                        .system(size: 200))
-                    .minimumScaleFactor(0.01)
-                    .aspectRatio(1, contentMode:.fit)
-                    .padding(5)
-                    .rotationEffect(.degrees(card.isMatched ? 360: 0))
-                    .animation(.spin(duration: 1), value: card.isMatched)
-            )
-            .padding(5)
-        //    .modifier(Cardify(isFaceUp: card.isFaceUp))
-            .cardify(isFaceUp: card.isFaceUp)
-            .foregroundColor(.teal)
-            .opacity(card.isFaceUp || !card.isMatched ? 1:0)
+        TimelineView(.animation) { timeline in
+            Pie(endAngle: Angle.degrees(card.bonusPercentRemaining * 360))
+                .opacity(0.4)
+                .overlay(
+                    Text(card.content)
+                        .font(
+                            .system(size: 200))
+                        .minimumScaleFactor(0.01)
+                        .aspectRatio(1, contentMode:.fit)
+                        .padding(5)
+                        .rotationEffect(.degrees(card.isMatched ? 360: 0))
+                        .animation(.spin(duration: 1), value: card.isMatched)
+                )
+                .padding(5)
+            //    .modifier(Cardify(isFaceUp: card.isFaceUp))
+                .cardify(isFaceUp: card.isFaceUp)
+                .foregroundColor(.teal)
+                .opacity(card.isFaceUp || !card.isMatched ? 1:0)
+        }
     }
 }
 

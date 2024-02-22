@@ -23,7 +23,7 @@ struct EmojiMemoryGameView: View  {
                 score
                 Spacer()
                shuffle
-            }
+            }.padding()
         }
        
     }
